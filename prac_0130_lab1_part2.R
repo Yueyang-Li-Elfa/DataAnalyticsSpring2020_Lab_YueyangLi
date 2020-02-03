@@ -123,10 +123,10 @@ detach(EPI_2010)
 
 ## 2: Linear Regression & corr
 # read in data
-multivriate <- read_csv("data/multivariate.csv")
+multivariate <- read_csv("data/multivariate.csv")
 
-head(multivriate)
-attach(multivriate)
+head(multivariate)
+attach(multivariate)
 
 cor(Homeowners, Immigrant)  # slight negative linear association
 mm <- lm(Homeowners ~ Immigrant)
@@ -141,7 +141,7 @@ plot(mm$residuals)
 plot(Homeowners ~ Immigrant)
 abline(mm, col = 4, lwd = 1.5)
 
-detach(multivriate)
+detach(multivariate)
 
 # =====================================================
 # C. creating plots using ggplot2
@@ -169,3 +169,16 @@ mtcars %>%
 mtcars %>%
   ggplot(aes(x = mpg)) +
   geom_histogram(binwidth = 5)
+
+# ===================================================
+# Feb 3, Monday
+# Additional part: linear regression, more independent variables
+
+# calculate HP and PD
+multivariate <- multivariate %>%
+  mutate(HP = Homeowners / Population,
+         PD = Population / area)
+
+mm_2 <- lm(Immigrant ~ Income + Population + HP + PD, data = multivariate)
+summary(mm_2)
+  # the model performance is improved significantly
